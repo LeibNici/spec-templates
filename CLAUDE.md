@@ -143,7 +143,7 @@
 | 字典与关联字段策略 | `.trellis/spec/backend/dict-and-relation-strategy.md` |
 | REST API 设计 | `.trellis/spec/backend/api-design.md` |
 | 错误码体系 | `.trellis/spec/backend/error-code.md` |
-| 后端测试策略 | `.trellis/spec/backend/test-strategy.md` |
+| 后端测试策略 | `.trellis/spec/backend/test-strategy/_index.md` |
 | 前端开发 | `.trellis/spec/frontend/` 目录下各主题文件 |
 | Vue SFC 写法 | `.trellis/spec/frontend/template-style.md` |
 | Lint 规则（前/后端） | `.trellis/spec/frontend/lint-policy.md` + `.trellis/spec/backend/lint-policy.md` |

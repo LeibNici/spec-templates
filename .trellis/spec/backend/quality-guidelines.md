@@ -89,17 +89,13 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 - 禁用 `JdbcTemplate`；数据访问只经 Mapper
 - 禁止空 catch（最低 `log.warn`）
 
----
-
-## Scheduled Task 规则
+### Scheduled Task
 
 - 必须放 `task/` 或 `job/` 包，类名以 `Task` / `Job` 结尾
 - Controller / Service 内禁用 `@Scheduled`
 - 必须配 ShedLock：`@SchedulerLock(name, lockAtMostFor, lockAtLeastFor)`
 
----
-
-## 事件驱动 & 状态机
+### 事件驱动 & 状态机
 
 - 跨模块解耦：`applicationEventPublisher.publishEvent(new XxxEvent(...))`
 - Listener：`@EventListener` + 幂等
@@ -133,49 +129,11 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 
 ---
 
-## Mock 策略
+## 测试与 Mock（铁律）
 
 ### 测试基础设施（必须保留）
 
-每个业务模块 `pom.xml` 必须保留：
-
-```xml
-<dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-</dependency>
-```
-
-它打包 `<scope>test</scope>`，**不进生产 jar**，零运行时成本。
-提供 JUnit 5 / Mockito / AssertJ / Spring Test / JsonPath 全套。
-**禁止**因"暂时不写测试"为理由移除——剥夺团队随时写测试的能力。
-
-### 允许的 Mock
-
-| 类型 | 位置 | 用途 |
-|---|---|---|
-| `Mockito.mock()` / `@Mock` | `src/test/java/` 单元测试 | mock 外部服务 / DB 边界 |
-| `@MockBean` | `src/test/java/` 集成测试 | **谨慎使用**，优先 Testcontainers 真起依赖 |
-| `integration/` 软失败 | 业务代码 | 第三方未对接时返安全默认值（详见 `directory-structure.md`） |
-
-### 严禁的 Mock
-
-- 业务代码（`controller/` / `service/`）里 `if (devMode) return fakeXxx`
-- `@Profile("dev")` Bean 写死假业务数据 return
-- `dev` 包里 `@PostConstruct` INSERT 假数据进业务表（详见 `code-smell-prevention/10-dev-mock.md §10`）
-
-### 全栈协作工作流
-
-后端在新功能开发时**先搭空接口契约**（10 分钟），让前端立即可接真路径——比让前端用 mock 工具更快、更准。详见 `.trellis/spec/guides/full-stack-workflow.md`。
-
----
-
-## 测试基础设施 & Mock 策略
-
-### spring-boot-starter-test 必须保留（铁律）
-
-每个业务模块（不含 `common` 这种纯 POJO 模块）必须保留：
+每个业务模块（不含 `common` 这种纯 POJO 模块）`pom.xml` 必须保留：
 
 ```xml
 <dependency>
@@ -186,27 +144,30 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 ```
 
 - 提供 JUnit 5 / Mockito / AssertJ / JsonPath / Spring Test
-- `<scope>test</scope>` 保证不打进生产 jar，零运行时成本
-- **禁止**因为"项目不写测试"就移除——剥夺了团队随时写测试的能力
+- `<scope>test</scope>` 不打进生产 jar，零运行时成本
+- **禁止**因"暂时不写测试"为理由移除——剥夺团队随时写测试的能力
 
-### Mock 分级允许
+### Mock 边界
 
-| 类型 | 评价 |
-|---|---|
-| 单元测试 `@Mock` / `Mockito.mock()` | ✅ 必需 |
-| 集成测试 `@MockBean` 替换上下游 Service | ⚠️ 谨慎用，优先 Testcontainers 真起依赖 |
-| 集成测试 Testcontainers（真起 MySQL / Redis） | ✅ 推荐 |
-| H2 内存 DB | ⚠️ 不推荐（与 MySQL 行为差异） |
+| 测试层 | Mock 谁 | 用什么 |
+|---|---|---|
+| 单元测试 | mock 所有外部（Mapper / 其他 Service / RestTemplate） | `@Mock` / `Mockito.mock()` |
+| 切片测试 Controller | mock Service | `@MockBean` |
+| 集成测试 | 仅 mock 外部三方 API；DB / Redis 用 Testcontainers | `@MockBean` + Testcontainers |
+| `integration/` 软失败 | 业务代码 | 第三方未对接时返安全默认值（详见 `directory-structure.md`） |
 
-### 严禁
+详细分层用法 + 反模式举例 → `test-strategy/07-mock.md`。
 
-- `@Profile("dev")` Bean 在生产代码里 return 写死的假业务数据
-- Controller / Service 里出现 `if (devMode) return fakeXxx`
-- `dev` 包 `@PostConstruct` 写 INSERT 业务表（详见 `code-smell-prevention/10-dev-mock.md §10`）
+### 严禁的 Mock 模式（业务代码侧）
 
-### 全栈开发流程
+- `controller/` / `service/` 里 `if (devMode) return fakeXxx`
+- `@Profile("dev")` Bean 写死假业务数据 return
+- `dev` 包 `@PostConstruct` INSERT 假数据进业务表（详见 `code-smell-prevention/10-dev-mock.md §10`）
+- 集成测试 `@MockBean` 替换 Mapper —— 失去集成意义，等于慢版单元测试
 
-后端先搭空接口契约（Controller + DTO/VO + 空 Service Impl），前端基于此写真 axios，前后端并行填实——比写 mock 数据更快、零联调切换。详见 `.trellis/spec/guides/full-stack-workflow.md`。
+### 全栈协作工作流
+
+后端新功能开发**先搭空接口契约**（Controller + DTO/VO + 空 Service Impl，10 分钟），前端立即可接真路径——比 mock 工具更快、零联调切换。详见 `guides/full-stack-workflow.md`。
 
 ---
 

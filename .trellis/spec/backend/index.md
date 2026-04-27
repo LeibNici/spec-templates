@@ -19,7 +19,7 @@
 | [Dict & Relation Strategy](./dict-and-relation-strategy.md) | 字典双轨制、关联字段存 ID 还是值、BaseEntity 审计字段约定 |
 | [API Design](./api-design.md) | URL 风格、HTTP 方法语义、分页参数、批量操作、版本管理、幂等头 |
 | [Error Code](./error-code.md) | 错误码格式、模块前缀、HTTP 与业务码双层、与 i18n 集成 |
-| [Test Strategy](./test-strategy.md) | 测试分层、命名约定、覆盖率门禁、Testcontainers 用法 |
+| [Test Strategy](./test-strategy/_index.md) | 测试分层、命名约定、覆盖率门禁、Testcontainers 用法 |
 | [Prod Hardening](./prod-hardening.md) | 安全配置、容量公式、限流策略、读写分离 |
 | [Lint Policy](./lint-policy.md) | Checkstyle / SpotBugs / PMD 规则意图清单（字面层防腐） |
 | [Dependency Policy](./dependency-policy.md) | 依赖直接/传递禁用清单、maven-enforcer-plugin 配置、例外报备 |
