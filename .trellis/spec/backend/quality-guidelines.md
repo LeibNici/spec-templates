@@ -163,7 +163,7 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 
 - 业务代码（`controller/` / `service/`）里 `if (devMode) return fakeXxx`
 - `@Profile("dev")` Bean 写死假业务数据 return
-- `dev` 包里 `@PostConstruct` INSERT 假数据进业务表（详见 `code-smell-prevention.md §10`）
+- `dev` 包里 `@PostConstruct` INSERT 假数据进业务表（详见 `code-smell-prevention/10-dev-mock.md §10`）
 
 ### 全栈协作工作流
 
@@ -202,7 +202,7 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 
 - `@Profile("dev")` Bean 在生产代码里 return 写死的假业务数据
 - Controller / Service 里出现 `if (devMode) return fakeXxx`
-- `dev` 包 `@PostConstruct` 写 INSERT 业务表（详见 `code-smell-prevention.md §10`）
+- `dev` 包 `@PostConstruct` 写 INSERT 业务表（详见 `code-smell-prevention/10-dev-mock.md §10`）
 
 ### 全栈开发流程
 
@@ -236,6 +236,7 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 - 临时子模块版本覆盖必须在注释中带 issue 链接 + 移除计划
 - Forbidden：`xxx-all` 包（如 `hutool-all` → 用 `hutool-core`）
 - Forbidden：Swagger / SpringDoc / Springfox 依赖
+- 依赖直接 / 传递禁用清单、`maven-enforcer-plugin` 配置、例外报备 → 见 [`dependency-policy.md`](./dependency-policy.md)
 
 ---
 
@@ -250,5 +251,6 @@ public R<XxxVO> create(@RequestBody @Valid XxxCreateDTO dto) {
 - [ ] 无魔法数字
 - [ ] 所有文件在尺寸上限内
 - [ ] 父子 build 治理（无未管理的子模块版本漂移）
+- [ ] 父 pom 配置 `maven-enforcer-plugin` `<bannedDependencies searchTransitive=true>`，build 期无命中
 - [ ] 命令 API 重活走"异步受理"契约 + afterCommit 分发
 - [ ] `mvn clean package -DskipTests` 通过

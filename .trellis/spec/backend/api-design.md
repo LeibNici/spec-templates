@@ -52,7 +52,7 @@
 | `DELETE` | 删除（逻辑删 / 物理删） | ✅ | ❌ |
 
 **铁律**：
-- `GET` 必须无副作用（不允许 GET 路径写库，详见 `code-smell-prevention.md §6.1`）
+- `GET` 必须无副作用（不允许 GET 路径写库，详见 `code-smell-prevention/06-method-design.md §6.1`）
 - `PUT` 必须**全量字段**替换；只改一两个字段用 `PATCH`
 - `POST` 用于无法用 CRUD 表达的命令（取消订单、生成报表）
 
@@ -266,7 +266,7 @@ HTTP 状态码 = 传输层语义
 |---|---|
 | Content-Type | `application/json; charset=UTF-8` |
 | Authorization | `Bearer {token}`（JWT） |
-| Accept-Language | `zh-CN` / `en-US`（详见 `i18n-strategy.md`） |
+| Accept-Language | `zh-CN` / `en-US`（详见 `i18n-strategy/_index.md`） |
 | Idempotency-Key | UUID（写操作可选） |
 | 入参对象 | DTO + `@Valid`（Controller 铁律） |
 

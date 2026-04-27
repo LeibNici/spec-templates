@@ -110,7 +110,7 @@
 - 禁止空 catch 块（最低 `log.warn`）；批量操作失败必须收集原因返回调用方
 - 禁止 Boolean flag 参数（拆为独立方法）；位置参数 ≤ 5 个（超出封装 DTO）
 - `getXxx` 无副作用；`saveXxx` 不做额外查询；查询方法禁止包含写操作
-- 详细规则见 `.trellis/spec/backend/code-smell-prevention.md`
+- 详细规则见 `.trellis/spec/backend/code-smell-prevention/_index.md`
 
 ---
 
@@ -139,7 +139,7 @@
 | 场景 | 规范文件 |
 |---|---|
 | 后端开发 | `.trellis/spec/backend/` 目录下各主题文件 |
-| 坏味道防腐 | `.trellis/spec/backend/code-smell-prevention.md` |
+| 坏味道防腐 | `.trellis/spec/backend/code-smell-prevention/_index.md` |
 | 字典与关联字段策略 | `.trellis/spec/backend/dict-and-relation-strategy.md` |
 | REST API 设计 | `.trellis/spec/backend/api-design.md` |
 | 错误码体系 | `.trellis/spec/backend/error-code.md` |
@@ -149,10 +149,10 @@
 | Lint 规则（前/后端） | `.trellis/spec/frontend/lint-policy.md` + `.trellis/spec/backend/lint-policy.md` |
 | Checkstyle 配置 | 项目根 `checkstyle.xml`（Maven Checkstyle plugin 直读） |
 | 跨层特性 | `.trellis/spec/guides/cross-layer-thinking-guide.md` |
-| 国际化（i18n） | `.trellis/spec/guides/i18n-strategy.md` |
+| 国际化（i18n） | `.trellis/spec/guides/i18n-strategy/_index.md` |
 | 多任务并行作业 | `.trellis/spec/guides/parallel-execution-default.md` |
 | 全栈开发流程（不 mock） | `.trellis/spec/guides/full-stack-workflow.md` |
-| Git 工作流 + PR 规范 | `.trellis/spec/guides/git-workflow.md` |
+| Git 工作流 + PR 规范 | `.trellis/spec/guides/git-workflow/_index.md` |
 | 开发服启动/停止/健康检查 | `.trellis/spec/guides/dev-server-lifecycle-guide.md` |
 | 构建与依赖治理 | `.trellis/spec/guides/build-dependency-governance-guide.md` |
 | 生产部署 | `.trellis/spec/backend/prod-hardening.md` |

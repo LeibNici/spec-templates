@@ -91,7 +91,7 @@ return s != null && s.matches("\\d+");
 
 ---
 
-## 静默跳过反模式（参见 code-smell-prevention.md §9）
+## 静默跳过反模式（参见 code-smell-prevention/09-silent-skip.md §9）
 
 批处理 / 分发 / 转发类代码遇到"本条处理不了"时，**单纯 `log.warn + continue/return` 是静默失败的温床**。
 

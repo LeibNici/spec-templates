@@ -211,7 +211,7 @@ progressMapper.insert(p);
 ```
 
 **修法**：
-1. 读路径别 insert（GET 无副作用，见 `code-smell-prevention.md §6.1`）
+1. 读路径别 insert（GET 无副作用，见 `code-smell-prevention/06-method-design.md §6.1`）
 2. 必须 insert 时，在 Entity 显式 set 所有 NOT NULL 无 DEFAULT 列
 3. 或 Flyway 新增 migration 给列加 DEFAULT（适合枚举默认状态列）
 

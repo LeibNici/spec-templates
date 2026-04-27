@@ -58,7 +58,7 @@
 | `MemberName` / `LocalVariableName` | `^[a-z][a-zA-Z0-9]*$`（lowerCamelCase） |
 | `PackageName` | `^[a-z]+(\.[a-z][a-z0-9]*)*$`（全小写） |
 
-### 3. 异常处理铁律（呼应 error-handling.md / code-smell-prevention.md）
+### 3. 异常处理铁律（呼应 error-handling.md / code-smell-prevention/_index.md）
 
 | 规则 | 取值 | 理由 |
 |---|---|---|
@@ -213,10 +213,10 @@ mvn -B verify checkstyle:check spotbugs:check pmd:check
 | 范畴 | 谁管 |
 |---|---|
 | Controller 不能注入 Mapper | `quality-guidelines.md` + AI review |
-| Service 单一职责 | `code-smell-prevention.md` + AI review |
+| Service 单一职责 | `code-smell-prevention/02-srp.md` + AI review |
 | 命名 PascalCase / camelCase | **本文件 + Checkstyle** |
 | 圈复杂度上限 | **本文件 + PMD** + AI review 兜底 |
 | 空 catch 块 | **本文件 + Checkstyle** + spec 双重 |
-| 跨模块直连他人 Mapper | `code-smell-prevention.md` + AI review（PMD 无法识别业务模块边界） |
+| 跨模块直连他人 Mapper | `code-smell-prevention/04-isolation.md` + AI review（PMD 无法识别业务模块边界） |
 
 **90% 架构问题 PMD/Checkstyle 抓不到**，所以本文件仅作辅助防线，主力仍是 spec + AI agent。

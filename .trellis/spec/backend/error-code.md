@@ -1,6 +1,6 @@
 # 错误码体系
 
-> 错误码 = `R<T>` 中 `code` 字段的取值规则。与 `i18n-strategy.md`（消息本地化）、`error-handling.md`（异常处理）、`api-design.md`（HTTP vs 业务码）配套。
+> 错误码 = `R<T>` 中 `code` 字段的取值规则。与 `i18n-strategy/_index.md`（消息本地化）、`error-handling.md`（异常处理）、`api-design.md`（HTTP vs 业务码）配套。
 
 ---
 

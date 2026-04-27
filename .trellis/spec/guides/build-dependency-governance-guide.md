@@ -102,6 +102,7 @@ Without these two conditions, child-level version pinning is **not allowed**.
 | `mvn package -pl xxx-admin` 不带 `-am` | spring-boot repackage 嵌入 .m2 旧依赖 jar，新 Controller / Service 静默 404 无任何启动错误 |
 | `mvn install` 写脏 .m2 当解决方案 | 表面缓解，根因仍在；下次别人 clone 又复发；项目规范明令禁用 |
 | `mvn spring-boot:run` | 也从 .m2 加载，必有旧 jar 风险 |
+| 直接禁用某依赖但忽略**传递引入** | spec 禁用的库通过 starter / BOM 上游被打进 jar，看似合规实则破防（详见 backend `dependency-policy.md` §依赖传递防腐） |
 
 ---
 
@@ -174,6 +175,7 @@ mvn clean package -DskipTests -pl {app}-admin -am -f {path-to-backend}/pom.xml
 - [ ] 插件版本是否集中？
 - [ ] 模块顺序是否遵循架构分层？
 - [ ] 任何例外是否有过期时间记录？
+- [ ] 父 pom 配 `maven-enforcer-plugin` 的 `<bannedDependencies searchTransitive=true>`，传递依赖也拦？（→ backend `dependency-policy.md` §依赖传递防腐）
 
 ---
 
