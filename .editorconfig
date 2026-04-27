@@ -1,0 +1,33 @@
+# http://editorconfig.org
+# 跨编辑器/IDE 统一基础格式（IDEA / VSCode / Vim 全部支持）
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Java / Maven 用 4 空格（Sun / Oracle 官方约定）
+[*.java]
+indent_size = 4
+
+# XML / pom.xml / Mapper.xml 用 4 空格更易读
+[*.xml]
+indent_size = 4
+
+# 配置文件保持 2 空格
+[*.{yml,yaml,json,toml,vue,ts,tsx,js,jsx,css,scss,less,html}]
+indent_size = 2
+
+# Markdown 不裁尾空格（双空格 = 换行语法）
+[*.md]
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+# Makefile 必须 tab
+[{Makefile,*.mk}]
+indent_style = tab
