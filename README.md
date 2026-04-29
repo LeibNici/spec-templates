@@ -64,7 +64,10 @@ This copies:
 <target>/.claude/hooks/inject-subagent-context.py
 <target>/.claude/hooks/statusline.py              # custom status line
 <target>/.githooks/pre-commit                     # L2 git pre-commit (calls same guard)
+<target>/checkstyle.xml                          # Maven Checkstyle config (paired with backend/lint-policy.md)
 ```
+
+> `checkstyle.xml` is **only copied if the target has none**, so a project that already customized it will not be overwritten.
 
 ### Three-layer guard architecture
 
@@ -120,6 +123,7 @@ spec-templates/
     ├── install.sh
     ├── code_smell_guard.py
     ├── spec_threshold_guard.py
+    ├── checkstyle.xml
     ├── .claude-hooks/
     └── .githooks/
 ```
