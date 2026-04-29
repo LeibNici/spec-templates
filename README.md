@@ -19,8 +19,8 @@ The registry channel is governed by the [Trellis registry protocol](https://docs
 
 ```bash
 trellis init --registry gh:LeibNici/spec-templates
-# → Trellis finds marketplace/index.json and installs
-#   marketplace/specs/default/  →  <your-project>/.trellis/spec/
+# → Trellis reads index.json at the repo root, finds template "default",
+#   downloads marketplace/specs/default/  →  <your-project>/.trellis/spec/
 ```
 
 After install, **read [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/specs/default/PLACEHOLDERS.md) and run the global token replacement** for your project name / package / module ids.
@@ -117,10 +117,10 @@ git -C /path/to/target-project config core.hooksPath .githooks
 ```
 spec-templates/
 ├── README.md                  # ← you are here
-├── marketplace/               # Trellis registry protocol
-│   ├── index.json             #   template index
+├── index.json                 # Trellis registry index (must live at repo root)
+├── marketplace/
 │   └── specs/
-│       └── default/           #   the SpringBoot+Vue spec template
+│       └── default/           # the SpringBoot+Vue spec template
 └── tools/                     # Custom guards/hooks (manual install)
     ├── install.sh
     ├── code_smell_guard.py

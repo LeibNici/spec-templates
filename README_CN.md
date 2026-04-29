@@ -19,8 +19,8 @@ Registry 通道遵循 [Trellis registry 协议](https://docs.trytrellis.app/zh/t
 
 ```bash
 trellis init --registry gh:LeibNici/spec-templates
-# Trellis 探测到 marketplace/index.json，自动安装：
-#   marketplace/specs/default/  →  <你的项目>/.trellis/spec/
+# Trellis 读取仓库根的 index.json，找到模板 "default"，
+# 下载 marketplace/specs/default/  →  <你的项目>/.trellis/spec/
 ```
 
 安装后**第一件事**：阅读 [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/specs/default/PLACEHOLDERS.md)，按字典做一次全局占位符替换（项目名、包名、模块 id 等）。
@@ -120,10 +120,10 @@ git -C /path/to/target-project config core.hooksPath .githooks
 spec-templates/
 ├── README.md                  # 英文（GitHub 默认显示）
 ├── README_CN.md               # ← 你正在看
-├── marketplace/               # Trellis registry 协议目录
-│   ├── index.json             #   模板索引
+├── index.json                 # Trellis registry 索引（必须在仓库根）
+├── marketplace/
 │   └── specs/
-│       └── default/           #   SpringBoot+Vue spec 模板
+│       └── default/           # SpringBoot+Vue spec 模板
 └── tools/                     # 自定义守护/hook（手动安装）
     ├── install.sh
     ├── code_smell_guard.py
