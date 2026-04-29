@@ -65,9 +65,11 @@ curl -sSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/i
 <target>/.claude/hooks/statusline.py              # 自定义状态栏
 <target>/.githooks/pre-commit                     # L2：git pre-commit 调用同一守护
 <target>/checkstyle.xml                          # Maven Checkstyle 配置（与 backend/lint-policy.md 配套）
+<target>/.editorconfig                           # 跨 IDE 格式统一
+<target>/CLAUDE.md                               # Claude Code 项目铁律（与 PLACEHOLDERS.md 配套）
 ```
 
-> `checkstyle.xml` **仅在目标项目根目录无此文件时**才拷贝，已自定义过的项目不会被覆盖。
+> `checkstyle.xml`、`.editorconfig`、`CLAUDE.md` **仅在目标项目无此文件时**才拷贝，已自定义过的不会被覆盖。`AGENTS.md` **故意不发**——它由 `trellis init` / `trellis update` 自己管。
 
 ### 三层守护架构
 
@@ -127,6 +129,8 @@ spec-templates/
     ├── code_smell_guard.py
     ├── spec_threshold_guard.py
     ├── checkstyle.xml
+    ├── .editorconfig
+    ├── CLAUDE.md
     ├── .claude-hooks/
     └── .githooks/
 ```

@@ -65,9 +65,11 @@ This copies:
 <target>/.claude/hooks/statusline.py              # custom status line
 <target>/.githooks/pre-commit                     # L2 git pre-commit (calls same guard)
 <target>/checkstyle.xml                          # Maven Checkstyle config (paired with backend/lint-policy.md)
+<target>/.editorconfig                           # Cross-IDE format unification
+<target>/CLAUDE.md                               # Claude Code project rules (paired with PLACEHOLDERS.md)
 ```
 
-> `checkstyle.xml` is **only copied if the target has none**, so a project that already customized it will not be overwritten.
+> `checkstyle.xml`, `.editorconfig`, and `CLAUDE.md` are **only copied if the target has none**, so projects that already customized any of them will not be overwritten. `AGENTS.md` is intentionally **not** distributed — it is managed by `trellis init` / `trellis update`.
 
 ### Three-layer guard architecture
 
@@ -124,6 +126,8 @@ spec-templates/
     ├── code_smell_guard.py
     ├── spec_threshold_guard.py
     ├── checkstyle.xml
+    ├── .editorconfig
+    ├── CLAUDE.md
     ├── .claude-hooks/
     └── .githooks/
 ```
