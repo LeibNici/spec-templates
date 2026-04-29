@@ -1,7 +1,7 @@
 # 字典与关联字段策略
 
 > 本文件解决两类高频架构决策：**字典数据归属**与**关联字段类型**。
-> 与 `database-guidelines.md`（DDL 标准）、`naming-conventions.md`（响应层枚举字段铁律）、`frontend/hook-guidelines.md`（前端 useDict）配套使用。
+> 与 `database-guidelines/_index.md`（DDL 标准）、`naming-conventions.md`（响应层枚举字段铁律）、`frontend/hook-guidelines.md`（前端 useDict）配套使用。
 
 ---
 

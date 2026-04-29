@@ -12,7 +12,7 @@
 | [Directory Structure](./directory-structure.md) | 多模块工程布局、模块依赖、业务模块标准目录 |
 | [Quality Guidelines](./quality-guidelines.md) | 代码硬性上限、Controller/Service/Mapper 铁律、并发幂等、异步契约 |
 | [Naming Conventions](./naming-conventions.md) | 类型/字段/方法/SQL 命名、Entity↔DB 语义一致、响应层枚举字段铁律 |
-| [Database Guidelines](./database-guidelines.md) | SQL 归属、DDL 标准、Flyway 工作流、Entity 映射、聚合分页模板 |
+| [Database Guidelines](./database-guidelines/_index.md) | SQL 归属、DDL 标准、Flyway 工作流、Entity 映射、聚合分页模板 |
 | [Error Handling](./error-handling.md) | 异常体系、catch 块规则、批量错误收集、GlobalExceptionHandler |
 | [Logging Guidelines](./logging-guidelines.md) | 绝对路径、JSON 格式、TraceId、敏感数据脱敏 |
 | [Code Smell Prevention](./code-smell-prevention/_index.md) | 弱类型禁用、SRP、防腐层、静默跳过反模式、历史违规修正义务 |
@@ -21,6 +21,8 @@
 | [Error Code](./error-code.md) | 错误码格式、模块前缀、HTTP 与业务码双层、与 i18n 集成 |
 | [Test Strategy](./test-strategy/_index.md) | 测试分层、命名约定、覆盖率门禁、Testcontainers 用法 |
 | [Prod Hardening](./prod-hardening.md) | 安全配置、容量公式、限流策略、读写分离 |
+| [Topology-Agnostic](./topology-agnostic.md) | 部署形态无关代码规范、ShedLock、Sentinel、健康检查、连接池超时（Active-Passive + Witness 拓扑） |
+| [High-Volume Tables](./high-volume-tables/_index.md) | 日志/流水类表治理：冗余列、月分区、AOP 写入、三层归档（热/温/冷） |
 | [Lint Policy](./lint-policy.md) | Checkstyle / SpotBugs / PMD 规则意图清单（字面层防腐） |
 | [Dependency Policy](./dependency-policy.md) | 依赖直接/传递禁用清单、maven-enforcer-plugin 配置、例外报备 |
 
@@ -32,7 +34,7 @@ Before writing any backend code, read these files based on your task:
 
 - **All tasks**: `quality-guidelines.md` + `naming-conventions.md`
 - **Refactor / cleanup tasks**: `code-smell-prevention/_index.md`
-- **Database changes**: `database-guidelines.md` + `dict-and-relation-strategy.md`
+- **Database changes**: `database-guidelines/_index.md` + `dict-and-relation-strategy.md`
 - **新增业务表 / 关联字段 / 字典字段**: `dict-and-relation-strategy.md`
 - **Error handling / exception flow**: `error-handling.md`
 - **Logging changes**: `logging-guidelines.md`

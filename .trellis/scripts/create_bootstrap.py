@@ -80,7 +80,7 @@ def write_prd_backend_section(spec_base: str) -> str:
 | File | What to Document |
 |------|------------------|
 | `.trellis/{spec_base}/backend/directory-structure.md` | Where different file types go (routes, services, utils) |
-| `.trellis/{spec_base}/backend/database-guidelines.md` | ORM, migrations, query patterns, naming conventions |
+| `.trellis/{spec_base}/backend/database-guidelines/_index.md` | ORM, migrations, query patterns, naming conventions |
 | `.trellis/{spec_base}/backend/error-handling.md` | How errors are caught, logged, and returned |
 | `.trellis/{spec_base}/backend/logging-guidelines.md` | Log levels, format, what to log |
 | `.trellis/{spec_base}/backend/quality-guidelines.md` | Code review standards, testing requirements |

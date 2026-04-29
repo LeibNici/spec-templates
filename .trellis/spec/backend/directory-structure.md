@@ -11,7 +11,7 @@
   {app}-integration/    # 外部系统适配器（interface + 真实 Impl）
   {app}-{biz}/          # 业务模块（可多个，只依赖 common + framework）
   {app}-admin/          # 启动入口，聚合所有模块
-sql/                    # 仅历史脚本（新变更走 Flyway，见 database-guidelines.md）
+sql/                    # 仅历史脚本（新变更走 Flyway，见 database-guidelines/03-flyway-workflow.md）
 ```
 
 > `{biz}` 是业务模块占位符（如 `order` / `inventory` / `user`），按业务域命名。

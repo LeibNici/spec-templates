@@ -66,6 +66,8 @@ spring.datasource.hikari:
 
 代码用 `@DS("slave")` 表达读意图；实际路由按环境配置控制。
 
+> 主从同步部署 + VIP 漂移场景的应用代码约束（ShedLock / Sentinel / 健康检查 / 连接池），见 [`topology-agnostic.md`](./topology-agnostic.md)。
+
 | 场景 | 注解 | 备注 |
 |---|---|---|
 | 写方法 | 无（默认 master） | |
