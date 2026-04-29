@@ -41,6 +41,19 @@ After install, **read [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/
 └── guides/                     # git workflow, i18n, dev-server, ...
 ```
 
+### Troubleshooting — empty `.trellis/spec/` after install
+
+If `trellis init` reports "Downloaded template" but `.trellis/spec/` is empty (or contains stale content), the cause is almost always a **stale [giget](https://github.com/unjs/giget) cache**: Trellis downloads the spec content via `giget`, which caches the registry tarball. After this registry repo is updated, the cache may still serve the old tarball and silently extract nothing if the template path moved.
+
+Clear the cache and re-run:
+
+```bash
+rm -rf ~/.cache/giget/gh/LeibNici-spec-templates
+trellis init   # choose "Full re-initialize" → Overwrite
+```
+
+If you ever maintain your own registry, tell consumers to clear `~/.cache/giget/<provider>/<owner>-<repo>` after every breaking change to the template path.
+
 ---
 
 ## Channel B — Install custom tools

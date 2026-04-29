@@ -41,6 +41,19 @@ trellis init --registry gh:LeibNici/spec-templates
 └── guides/                     # Git workflow、i18n、dev-server 等
 ```
 
+### 故障排除 —— 安装后 `.trellis/spec/` 是空的
+
+如果 `trellis init` 提示 "Downloaded template" 但 `.trellis/spec/` 是空的（或还是旧内容），九成是 **[giget](https://github.com/unjs/giget) 本地缓存陈旧**：Trellis 通过 giget 下载 spec 内容，giget 会把仓库 tarball 缓存到本地，registry 更新后第一次拉取时仍然会用旧缓存——如果模板路径换过位置，旧缓存里找不到就静默解压 0 个文件。
+
+清缓存重跑：
+
+```bash
+rm -rf ~/.cache/giget/gh/LeibNici-spec-templates
+trellis init   # 选 Full re-initialize → Overwrite
+```
+
+> 如果你也在维护自己的 registry：每次破坏性改动模板路径后，记得在 README 提醒使用方清缓存 `~/.cache/giget/<provider>/<owner>-<repo>`。
+
 ---
 
 ## 通道 B — 安装自定义工具
