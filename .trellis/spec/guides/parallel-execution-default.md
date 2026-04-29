@@ -33,10 +33,10 @@
 | 角色 | subagent_type | 职责 |
 |------|---------------|------|
 | **Lead**（=主对话） | — | 拆解任务、并发派发、综合产出、用户确认 |
-| **Research / Scout** | `research`（只读）/ `Explore` | 同根问题扫描、上下文检索、规范查阅 |
-| **Implement** | `implement` | 实际编辑代码（不可 commit） |
-| **Check** | `check` | 编译、lint、跑测、回测 |
-| **Debug** | `debug` | 根因定位、复现、最小化修复 |
+| **Research / Scout** | `trellis-research`（只读，产物落 `research/`）/ `Explore`（轻量只读，不持久化）| 同根问题扫描、上下文检索、规范查阅 |
+| **Implement** | `trellis-implement` | 实际编辑代码（不可 commit） |
+| **Check** | `trellis-check` | 编译、lint、跑测、回测 |
+| **Break-Loop** | `trellis-break-loop` | 修完 bug 后的根因分析与防腐建议（替代旧 `debug` 角色）|
 
 ---
 
