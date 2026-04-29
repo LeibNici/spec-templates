@@ -2,6 +2,8 @@
 
 A **Trellis spec template registry** for SpringBoot + Vue full-stack projects, plus a companion `tools/` directory with custom guards and hooks.
 
+> [中文版 README](README_CN.md)
+
 ## Two distribution channels
 
 | Channel | What | How |
