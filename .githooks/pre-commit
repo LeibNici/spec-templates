@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pre-commit hook: enforce spec defragmentation contract.
+# Pre-commit hook: enforce spec defragmentation + code-smell contracts.
 #
 # Activation (one-time per clone):
 #   git config core.hooksPath .githooks
@@ -7,31 +7,49 @@
 # Behavior:
 #   - violations (exit 1)   block commit
 #   - warnings   (exit 2)   print but allow commit
-#   - non-spec changes      no-op
+#   - non-checked changes   no-op
 #
-# Authoritative thresholds live in:
+# Authoritative checkers (single source of truth):
 #   .trellis/scripts/spec_threshold_guard.py
+#   .trellis/scripts/code_smell_guard.py
+#
+# Thresholds & rules referenced from:
 #   .trellis/spec/guides/index.md §Convention: Guide Split Threshold
+#   .trellis/spec/backend/code-smell-prevention/_index.md
 
-set -e
+# Don't `set -e`: we capture rc per-checker and aggregate.
+final_rc=0
 
-staged=$(git diff --cached --name-only --diff-filter=ACMR -- '*.md' \
-         | grep -E '^\.trellis/spec/.*\.md$' || true)
+# --- 1) spec defragmentation guard -------------------------------------------
+staged_spec=$(git diff --cached --name-only --diff-filter=ACMR -- '*.md' \
+              | grep -E '^\.trellis/spec/.*\.md$' || true)
 
-if [ -z "$staged" ]; then
-  exit 0
+if [ -n "$staged_spec" ]; then
+  # shellcheck disable=SC2086
+  python3 .trellis/scripts/spec_threshold_guard.py $staged_spec
+  rc=$?
+  if [ "$rc" -eq 1 ]; then
+    echo ""
+    echo "Spec threshold violated. Split the offending file before committing."
+    echo "See: .trellis/spec/guides/index.md §Convention: Guide Split Threshold"
+    final_rc=1
+  fi
+  # rc=2 (warnings) is a soft signal — commit is allowed.
 fi
 
-# shellcheck disable=SC2086
-python3 .trellis/scripts/spec_threshold_guard.py $staged
-rc=$?
+# --- 2) code-smell guard (Java) ----------------------------------------------
+staged_java=$(git diff --cached --name-only --diff-filter=ACMR -- '*.java' || true)
 
-if [ "$rc" -eq 1 ]; then
-  echo ""
-  echo "Spec threshold violated. Split the offending file before committing."
-  echo "See: .trellis/spec/guides/index.md §Convention: Guide Split Threshold"
-  exit 1
+if [ -n "$staged_java" ]; then
+  # shellcheck disable=SC2086
+  python3 .trellis/scripts/code_smell_guard.py $staged_java
+  rc=$?
+  if [ "$rc" -eq 1 ]; then
+    echo ""
+    echo "Code-smell violation detected. Fix before committing."
+    echo "See: .trellis/spec/backend/code-smell-prevention/_index.md"
+    final_rc=1
+  fi
 fi
 
-# rc=2 (warnings) is a soft signal — commit is allowed.
-exit 0
+exit $final_rc
