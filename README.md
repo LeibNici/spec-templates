@@ -62,9 +62,8 @@ If you ever maintain your own registry, tell consumers to clear `~/.cache/giget/
 # from a clone:
 ./tools/install.sh /path/to/target-project
 
-# or one-shot from raw:
-curl -sSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh \
-  | bash -s -- /path/to/target-project
+# or one-shot from raw (single line — script self-bootstraps the clone):
+curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh | bash -s -- /path/to/target-project
 ```
 
 This copies:

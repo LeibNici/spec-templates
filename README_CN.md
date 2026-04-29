@@ -62,9 +62,8 @@ trellis init   # 选 Full re-initialize → Overwrite
 # 已 clone：
 ./tools/install.sh /path/to/target-project
 
-# 远程一键：
-curl -sSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh \
-  | bash -s -- /path/to/target-project
+# 远程一键（单行不要换行；脚本会自己 git clone 一份再拷过来）：
+curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh | bash -s -- /path/to/target-project
 ```
 
 会拷入：

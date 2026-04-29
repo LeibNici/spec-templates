@@ -22,14 +22,45 @@
 #   - Touch AGENTS.md (managed by `trellis init` / `trellis update`, not by us)
 #
 # Usage:
+#   # local clone
 #   ./tools/install.sh                       # install into current directory
 #   ./tools/install.sh /path/to/target       # install into target directory
-#   curl -sSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh | bash -s -- /path/to/target
+#
+#   # remote one-shot (script auto-clones the repo into a temp dir, then runs)
+#   curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/install.sh | bash -s -- /path/to/target
 
 set -euo pipefail
 
+REPO_URL="https://github.com/LeibNici/spec-templates.git"
 TARGET="${1:-$(pwd)}"
-SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Locate this script's siblings (code_smell_guard.py, .claude-hooks/, ...).
+# When invoked via `curl | bash`, BASH_SOURCE[0] is empty/unset and there is no
+# local clone — bootstrap by shallow-cloning the repo into a temp dir.
+SCRIPT_FILE="${BASH_SOURCE[0]:-}"
+SOURCE_DIR=""
+BOOTSTRAP_TMP=""
+
+if [[ -n "$SCRIPT_FILE" ]] && [[ -f "$SCRIPT_FILE" ]]; then
+  CANDIDATE="$(cd "$(dirname "$SCRIPT_FILE")" && pwd)"
+  if [[ -f "$CANDIDATE/code_smell_guard.py" ]]; then
+    SOURCE_DIR="$CANDIDATE"
+  fi
+fi
+
+if [[ -z "$SOURCE_DIR" ]]; then
+  echo "[install.sh] running standalone (curl|bash) — bootstrapping clone of $REPO_URL"
+  if ! command -v git >/dev/null 2>&1; then
+    echo "[install.sh] ERROR: git is required for the remote install path." >&2
+    echo "[install.sh]        Install git, or clone the repo manually and run tools/install.sh." >&2
+    exit 1
+  fi
+  BOOTSTRAP_TMP="$(mktemp -d -t spec-templates.XXXXXX)"
+  trap 'rm -rf "$BOOTSTRAP_TMP"' EXIT
+  git clone --depth 1 --quiet "$REPO_URL" "$BOOTSTRAP_TMP"
+  SOURCE_DIR="$BOOTSTRAP_TMP/tools"
+fi
 
 if [[ ! -d "$TARGET" ]]; then
   echo "[install.sh] target directory not found: $TARGET" >&2
