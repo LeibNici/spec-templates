@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "templates": [
+    {
+      "id": "default",
+      "type": "spec",
+      "name": "SpringBoot + Vue Spec Template",
+      "description": "Backend (Spring Boot) + frontend (Vue) full-stack project specs and workflow guides. After install, see PLACEHOLDERS.md and replace project-specific tokens.",
+      "path": "marketplace/specs/default",
+      "tags": ["springboot", "vue", "fullstack", "java", "typescript"]
+    }
+  ]
+}

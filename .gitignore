@@ -82,3 +82,21 @@ logs/
 .gradle/
 build/
 out/
+
+#==============================================================================
+# Python
+#==============================================================================
+**/__pycache__/
+**/*.pyc
+
+#==============================================================================
+# Trellis runtime / personal data — must never be in a registry repo
+#==============================================================================
+.trellis/.developer
+.trellis/.current-task
+.trellis/.runtime/
+.trellis/.template-hashes.json
+.trellis/.version
+.trellis/.backup-*
+.trellis/workspace/
+.trellis/tasks/
