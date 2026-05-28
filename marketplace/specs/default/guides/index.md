@@ -21,10 +21,13 @@ These guides help you **ask the right questions before coding**.
 
 | Guide | Purpose | When to Use |
 |-------|---------|-------------|
+| [Shared Contract Specs](../shared/index.md) | API、枚举、ID/时间、错误响应等前后端硬契约 | 任何跨后端与前端边界的行为变更 |
 | [Code Reuse Thinking Guide](./code-reuse-thinking-guide.md) | 识别模式、减少重复 | 注意到模式在重复 |
 | [Cross-Layer Thinking Guide](./cross-layer-thinking-guide.md) | 思考跨层数据流 | 跨多层的特性 |
 | [Build & Dependency Governance Guide](./build-dependency-governance-guide.md) | build 文件分层、版本归属集中化 | 改 `pom.xml` / build 配置 / 依赖版本 |
 | [Dev Server Lifecycle Guide](./dev-server-lifecycle-guide.md) | 前后端开发服启动 / 停止 / 重启 / 健康检查 SOP | 启动/重启前后端、清端口、登录自测、调试 500 响应 |
+| [Local Verification](./local-verification.md) | push/deploy 前的本地编译、启动、接口、页面、E2E 验证口径 | 行为改动完成后、准备交付前 |
+| [State Freshness](./state-freshness.md) | 文件、端口、进程、构建产物、dev server 这类易变状态的复测纪律 | 基于旧工具输出准备下结论时 |
 | [Parallel Execution Default](./parallel-execution-default.md) | 多任务默认开 Agent Team 并行作业 | 跨 ≥2 模块、≥4 文件编辑、研究+实现并存 |
 | [Full-Stack Workflow](./full-stack-workflow.md) | 不 mock 的全栈开发 5 步流程 | 每开一个新 feature；前后端同期开发 |
 | [Git Workflow](./git-workflow/_index.md) | 分支模型、Conventional Commits、PR 规范、Merge 策略 | 团队 ≥ 2 人协作；新人 onboarding |
@@ -70,6 +73,24 @@ These guides help you **ask the right questions before coding**.
 - [ ] 第一次在本会话接触启动命令
 
 → Read [Dev Server Lifecycle Guide](./dev-server-lifecycle-guide.md)
+
+### When to Think About Local Verification
+
+- [ ] 你准备 push / deploy / 标记完成
+- [ ] 改动触达 Controller / Service / Mapper / SQL / API client / Vue page
+- [ ] 编译通过但还没有跑真实接口或页面
+- [ ] 前后端契约、状态流转、写操作或权限行为发生变化
+
+→ Read [Local Verification](./local-verification.md)
+
+### When to Think About State Freshness
+
+- [ ] 你要基于旧的 `ls` / `lsof` / `curl` / log 输出下结论
+- [ ] 用户要求重试或指出状态可能已变化
+- [ ] install / build / startup 被打断或刚结束
+- [ ] 你准备说文件缺失、端口占用、服务未启动、接口仍 404
+
+→ Read [State Freshness](./state-freshness.md)
 
 ### When to Default to Agent Team
 

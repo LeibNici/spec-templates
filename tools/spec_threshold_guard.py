@@ -14,7 +14,8 @@ Usage:
     spec_threshold_guard.py [--scan] [--json] [PATH ...]
 
 Modes:
-    no args / --scan : scan all .md files under .trellis/spec/
+    no args / --scan : scan all .md files under the active spec root
+                       (.trellis/spec after install, marketplace/specs/default in this repo)
     PATH ...         : check only the listed files (skips non-md / non-spec)
 
 Output:
@@ -37,7 +38,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Iterable
 
 # --- Thresholds ---------------------------------------------------------------
 SIZE_LIMIT = 15 * 1024     # bytes
@@ -48,12 +48,41 @@ H2_RE = re.compile(r"^## ", re.MULTILINE)
 
 # --- Repo discovery -----------------------------------------------------------
 THIS_FILE = Path(__file__).resolve()
-REPO_ROOT = THIS_FILE.parent.parent.parent     # .trellis/scripts/.. → repo
-SPEC_ROOT = REPO_ROOT / ".trellis" / "spec"
+
+
+def find_repo_root() -> Path:
+    """Find the project or template repo root without assuming install path."""
+    starts = [Path.cwd().resolve(), THIS_FILE.parent]
+    for start in starts:
+        current = start
+        while current != current.parent:
+            if (current / ".trellis" / "spec").is_dir():
+                return current
+            if (current / "marketplace" / "specs" / "default").is_dir():
+                return current
+            if (current / ".git").exists() and (current / ".trellis").is_dir():
+                return current
+            current = current.parent
+    return THIS_FILE.parent.parent.parent
+
+
+def find_spec_root(repo_root: Path) -> Path:
+    """Use installed project specs first, then this registry's source template."""
+    installed = repo_root / ".trellis" / "spec"
+    if installed.is_dir():
+        return installed
+    template = repo_root / "marketplace" / "specs" / "default"
+    if template.is_dir():
+        return template
+    return installed
+
+
+REPO_ROOT = find_repo_root()
+SPEC_ROOT = find_spec_root(REPO_ROOT)
 
 
 def is_spec_md(path: Path) -> bool:
-    """True if path is a markdown file under .trellis/spec/."""
+    """True if path is a markdown file under the active spec root."""
     try:
         path.resolve().relative_to(SPEC_ROOT.resolve())
     except ValueError:

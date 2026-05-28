@@ -13,6 +13,8 @@
 | 3. Flyway 迁移工作流 | [03-flyway-workflow.md](./03-flyway-workflow.md) |
 | 4. Entity 映射规则（BaseEntity / @TableName / @TableField / NOT NULL 契约）| [04-entity-mapping.md](./04-entity-mapping.md) |
 | 5. 分页 + GROUP BY 聚合模板 + MyBatis-Plus 约定 + Data Dictionary | [05-pagination-aggregation.md](./05-pagination-aggregation.md) |
+| 6. 逻辑删除 + Unique 索引设计 | [06-soft-delete-unique.md](./06-soft-delete-unique.md) |
+| 7. Effective Row Filters（当前有效行过滤） | [07-effective-row-filter.md](./07-effective-row-filter.md) |
 
 ---
 
@@ -27,6 +29,8 @@ JOIN/聚合 ──────→ Mapper XML（resultMap + COUNT(DISTINCT)）   
 列变更    ──────→ Flyway V{N}__{domain}_{desc}.sql（不改已部署 V）  见 03
 新建 Entity → @TableName + extends BaseEntity；不用 @TableField 列名映射  见 04
 分页聚合查询 ──→ Page<VO> + Mapper XML + COALESCE(SUM())          见 05
+逻辑删除 + 唯一字段 → 主数据复合 unique + 删除改名；sync 表普通索引 + Java dedup 见 06
+版本/层级/租户/有效期表 → 查询当前业务视图时显式加 effective predicates 见 07
 ```
 
 ---

@@ -8,6 +8,7 @@
 .windsurf/
 .cline/
 .aider*
+AGENTS.md
 
 #==============================================================================
 # AI Agent / Tool Runtime
@@ -16,6 +17,7 @@
 .ace-tool/
 .playwright-cli/
 .tmp/
+.trellis/
 
 #==============================================================================
 # Environment & Secrets
@@ -92,11 +94,5 @@ out/
 #==============================================================================
 # Trellis runtime / personal data — must never be in a registry repo
 #==============================================================================
-.trellis/.developer
-.trellis/.current-task
-.trellis/.runtime/
-.trellis/.template-hashes.json
-.trellis/.version
-.trellis/.backup-*
-.trellis/workspace/
-.trellis/tasks/
+# Full runtime is ignored above via `.trellis/`; the distributable template lives
+# under `marketplace/specs/default/`.

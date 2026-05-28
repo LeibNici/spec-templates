@@ -45,11 +45,28 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
-from typing import Iterable
 
 # --- Repo discovery -----------------------------------------------------------
 THIS_FILE = Path(__file__).resolve()
-REPO_ROOT = THIS_FILE.parent.parent.parent  # .trellis/scripts/.. → repo
+
+
+def find_repo_root() -> Path:
+    """Find the project or template repo root without assuming install path."""
+    starts = [Path.cwd().resolve(), THIS_FILE.parent]
+    for start in starts:
+        current = start
+        while current != current.parent:
+            if (current / ".trellis" / "spec").is_dir():
+                return current
+            if (current / "marketplace" / "specs" / "default").is_dir():
+                return current
+            if (current / ".git").exists() and (current / ".trellis").is_dir():
+                return current
+            current = current.parent
+    return THIS_FILE.parent.parent.parent
+
+
+REPO_ROOT = find_repo_root()
 
 
 # --- Annotation finder (balanced-paren aware) ---------------------------------

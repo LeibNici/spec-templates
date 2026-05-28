@@ -8,12 +8,12 @@
 
 | 占位符 | 含义 | 示例值 | 出现位置 |
 |---|---|---|---|
-| `{Project Name}` | 项目展示名（中文/英文） | `信川数字化系统` / `Acme Inventory` | `CLAUDE.md` 第 1 行 |
-| `{app}` / `{app-name}` | 应用代号（小写，连字符） | `xinchuan` / `acme-inv` | 后端模块前缀、前端目录、jar 名 |
-| `{biz}` | 业务模块代号 | `order` / `inventory` / `mes` | Maven 子模块、Java 包、前端 `views/{biz}/` |
-| `{org}` | 组织包名（点分） | `com.xinchuan` / `com.acme` | Java `package com.{org}.{biz}.*` |
+| `{Project Name}` | 项目展示名（中文/英文） | `Acme Inventory` / `Example Platform` | `CLAUDE.md` 第 1 行 |
+| `{app}` / `{app-name}` | 应用代号（小写，连字符） | `acme-inv` / `example-platform` | 后端模块前缀、前端目录、jar 名 |
+| `{biz}` | 业务模块代号 | `order` / `inventory` / `billing` | Maven 子模块、Java 包、前端 `views/{biz}/` |
+| `{org}` | 组织包名（点分） | `com.acme` / `com.example` | Java `package com.{org}.{biz}.*` |
 | `{path-to-backend}` | 后端项目绝对路径 | `/Users/me/IdeaProjects/acme/acme-backend` | `mvn -f`、启动脚本 |
-| `{AppName}Application` | Spring Boot 启动类名 | `XinchuanApplication` | `dev-server-lifecycle-guide.md` 日志 grep |
+| `{AppName}Application` | Spring Boot 启动类名 | `AcmeApplication` | `dev-server-lifecycle-guide.md` 日志 grep |
 
 ---
 
@@ -21,11 +21,11 @@
 
 ```bash
 # 在新项目根目录执行（已 clone 本模板）
-PROJECT_NAME="信川数字化系统"
-APP="xinchuan"
+PROJECT_NAME="Acme Inventory"
+APP="acme-inv"
 BIZ_DEFAULT="order"           # 首个业务模块名（其他模块按需新增）
-ORG="com.xinchuan"
-APP_NAME_CLASS="Xinchuan"     # 启动类前缀（PascalCase）
+ORG="com.acme"
+APP_NAME_CLASS="Acme"         # 启动类前缀（PascalCase）
 
 # 仅替换 .trellis/spec/ + CLAUDE.md
 find .trellis/spec CLAUDE.md -type f -name "*.md" | while read f; do

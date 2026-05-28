@@ -21,7 +21,7 @@
 
 | 段 | 规则 | 示例 |
 |---|---|---|
-| `MODULE` | 模块名大写（OMS / WMS / USER / ORDER / AUTH / VALID / SYS） | `ORDER` |
+| `MODULE` | 模块名大写（ORDER / INVENTORY / USER / AUTH / VALID / SYS） | `ORDER` |
 | `CATEGORY` | 错误大类（NOT_FOUND / DUPLICATE / FORBIDDEN / INVALID / TIMEOUT） | `NOT_FOUND` |
 | `SPECIFIC` | 具体错误（可省，模块单一时） | （无） |
 

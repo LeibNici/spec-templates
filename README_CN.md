@@ -8,19 +8,25 @@
 
 | 通道 | 内容 | 使用方式 |
 |---|---|---|
-| **Spec（registry）** | `marketplace/specs/default/{backend,frontend,guides}/**` | Trellis 通过 `trellis init --registry` 自动同步 |
+| **Spec（registry）** | `marketplace/specs/default/{backend,frontend,shared,guides}/**` | Trellis 通过 `trellis init --registry` 自动同步 |
 | **Tools（手动）** | Python 守护 + Claude/git hook | `tools/install.sh` 一键安装 |
 
-Registry 通道遵循 [Trellis registry 协议](https://docs.trytrellis.app/zh/templates/specs-index)——协议层规定**只允许 spec 内容**。Tools 通道是兄弟通道，承载 Trellis 本身不分发的项目级自定义增强。
+Registry 通道遵循 [Trellis custom spec marketplace 模型](https://docs.trytrellis.app/beta/advanced/custom-spec-template-marketplace)——协议层规定**只允许 spec 内容**。Tools 通道是兄弟通道，承载 Trellis 本身不分发的项目级自定义增强。
 
 ---
 
 ## 通道 A — 安装 Spec 模板
 
 ```bash
-trellis init --registry gh:LeibNici/spec-templates
-# Trellis 读取仓库根的 index.json，找到模板 "default"，
+trellis init --registry gh:LeibNici/spec-templates/marketplace --template default
+# Trellis 读取 marketplace/index.json，找到模板 "default"，
 # 下载 marketplace/specs/default/  →  <你的项目>/.trellis/spec/
+```
+
+如果想跳过 marketplace picker，直接安装模板目录也可以：
+
+```bash
+trellis init --registry gh:LeibNici/spec-templates/marketplace/specs/default
 ```
 
 安装后**第一件事**：阅读 [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/specs/default/PLACEHOLDERS.md)，按字典做一次全局占位符替换（项目名、包名、模块 id 等）。
@@ -38,6 +44,7 @@ trellis init --registry gh:LeibNici/spec-templates
 │   ├── test-strategy/          # 测试分层与执行
 │   └── …（命名、日志、生产硬化等）
 ├── frontend/                   # Vue 规范、hook、类型安全
+├── shared/                     # API、枚举、ID/时间、错误响应等跨层契约
 └── guides/                     # Git workflow、i18n、dev-server 等
 ```
 
@@ -48,8 +55,8 @@ trellis init --registry gh:LeibNici/spec-templates
 清缓存重跑：
 
 ```bash
-rm -rf ~/.cache/giget/gh/LeibNici-spec-templates
-trellis init   # 选 Full re-initialize → Overwrite
+rm -rf ~/.cache/giget/gh/LeibNici-spec-templates*
+trellis init --registry gh:LeibNici/spec-templates/marketplace --template default
 ```
 
 > 如果你也在维护自己的 registry：每次破坏性改动模板路径后，记得在 README 提醒使用方清缓存 `~/.cache/giget/<provider>/<owner>-<repo>`。
@@ -73,8 +80,6 @@ curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/
 <target>/.trellis/scripts/spec_threshold_guard.py # spec 覆盖率阈值检查
 <target>/.claude/hooks/code-smell-check.py        # PostToolUse：每次编辑触发 L1
 <target>/.claude/hooks/spec-threshold-check.py    # Stop hook：会话结束阈值校验
-<target>/.claude/hooks/inject-subagent-context.py
-<target>/.claude/hooks/statusline.py              # 自定义状态栏
 <target>/.githooks/pre-commit                     # L2：git pre-commit 调用同一守护
 <target>/checkstyle.xml                          # Maven Checkstyle 配置（与 backend/lint-policy.md 配套）
 <target>/.editorconfig                           # 跨 IDE 格式统一
@@ -82,6 +87,7 @@ curl -fsSL https://raw.githubusercontent.com/LeibNici/spec-templates/main/tools/
 ```
 
 > `checkstyle.xml`、`.editorconfig`、`CLAUDE.md` **仅在目标项目无此文件时**才拷贝，已自定义过的不会被覆盖。`AGENTS.md` **故意不发**——它由 `trellis init` / `trellis update` 自己管。
+> Trellis 生命周期 hook、sub-agent 上下文注入、状态栏和平台配置继续交给 `trellis init` / `trellis update` 管；本安装器只添加自定义守护工具。
 
 ### 三层守护架构
 
@@ -132,8 +138,9 @@ git -C /path/to/target-project config core.hooksPath .githooks
 spec-templates/
 ├── README.md                  # 英文（GitHub 默认显示）
 ├── README_CN.md               # ← 你正在看
-├── index.json                 # Trellis registry 索引（必须在仓库根）
+├── index.json                 # 兼容旧用法的根索引
 ├── marketplace/
+│   ├── index.json             # 推荐使用的 Trellis registry 索引
 │   └── specs/
 │       └── default/           # SpringBoot+Vue spec 模板
 └── tools/                     # 自定义守护/hook（手动安装）

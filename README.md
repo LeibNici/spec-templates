@@ -8,19 +8,25 @@ A **Trellis spec template registry** for SpringBoot + Vue full-stack projects, p
 
 | Channel | What | How |
 |---|---|---|
-| **Spec (registry)** | `.trellis/spec/{backend,frontend,guides}/**` | Trellis pulls automatically via `trellis init --registry` |
+| **Spec (registry)** | `marketplace/specs/default/{backend,frontend,shared,guides}/**` | Trellis pulls automatically via `trellis init --registry` |
 | **Tools (manual)** | Python guards + Claude/git hooks | One-shot install via `tools/install.sh` |
 
-The registry channel is governed by the [Trellis registry protocol](https://docs.trytrellis.app/zh/templates/specs-index) — only spec content is allowed there. The tools channel is a sibling for project-level adaptations Trellis itself does not distribute.
+The registry channel follows the [Trellis custom spec marketplace model](https://docs.trytrellis.app/beta/advanced/custom-spec-template-marketplace) — only spec content belongs there. The tools channel is a sibling for project-level adaptations Trellis itself does not distribute.
 
 ---
 
 ## Channel A — Install spec templates
 
 ```bash
-trellis init --registry gh:LeibNici/spec-templates
-# → Trellis reads index.json at the repo root, finds template "default",
+trellis init --registry gh:LeibNici/spec-templates/marketplace --template default
+# → Trellis reads marketplace/index.json, finds template "default",
 #   downloads marketplace/specs/default/  →  <your-project>/.trellis/spec/
+```
+
+Direct mode is also supported when you want to install the template folder itself:
+
+```bash
+trellis init --registry gh:LeibNici/spec-templates/marketplace/specs/default
 ```
 
 After install, **read [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/specs/default/PLACEHOLDERS.md) and run the global token replacement** for your project name / package / module ids.
@@ -38,6 +44,7 @@ After install, **read [`marketplace/specs/default/PLACEHOLDERS.md`](marketplace/
 │   ├── test-strategy/
 │   └── ... (naming, logging, prod-hardening, ...)
 ├── frontend/                   # Vue conventions, hooks, type safety
+├── shared/                     # API, enum, ID/time, and error contracts
 └── guides/                     # git workflow, i18n, dev-server, ...
 ```
 
@@ -48,8 +55,8 @@ If `trellis init` reports "Downloaded template" but `.trellis/spec/` is empty (o
 Clear the cache and re-run:
 
 ```bash
-rm -rf ~/.cache/giget/gh/LeibNici-spec-templates
-trellis init   # choose "Full re-initialize" → Overwrite
+rm -rf ~/.cache/giget/gh/LeibNici-spec-templates*
+trellis init --registry gh:LeibNici/spec-templates/marketplace --template default
 ```
 
 If you ever maintain your own registry, tell consumers to clear `~/.cache/giget/<provider>/<owner>-<repo>` after every breaking change to the template path.
@@ -73,8 +80,6 @@ This copies:
 <target>/.trellis/scripts/spec_threshold_guard.py # spec coverage threshold check
 <target>/.claude/hooks/code-smell-check.py        # PostToolUse: per-edit guard (calls L1)
 <target>/.claude/hooks/spec-threshold-check.py    # session-end / Stop hook
-<target>/.claude/hooks/inject-subagent-context.py
-<target>/.claude/hooks/statusline.py              # custom status line
 <target>/.githooks/pre-commit                     # L2 git pre-commit (calls same guard)
 <target>/checkstyle.xml                          # Maven Checkstyle config (paired with backend/lint-policy.md)
 <target>/.editorconfig                           # Cross-IDE format unification
@@ -82,6 +87,7 @@ This copies:
 ```
 
 > `checkstyle.xml`, `.editorconfig`, and `CLAUDE.md` are **only copied if the target has none**, so projects that already customized any of them will not be overwritten. `AGENTS.md` is intentionally **not** distributed — it is managed by `trellis init` / `trellis update`.
+> Trellis lifecycle hooks, sub-agent context injection, status lines, and platform config remain owned by `trellis init` / `trellis update`; this installer only adds custom guard tooling.
 
 ### Three-layer guard architecture
 
@@ -129,8 +135,9 @@ git -C /path/to/target-project config core.hooksPath .githooks
 ```
 spec-templates/
 ├── README.md                  # ← you are here
-├── index.json                 # Trellis registry index (must live at repo root)
+├── index.json                 # legacy root registry index
 ├── marketplace/
+│   ├── index.json             # primary Trellis registry index
 │   └── specs/
 │       └── default/           # the SpringBoot+Vue spec template
 └── tools/                     # Custom guards/hooks (manual install)
